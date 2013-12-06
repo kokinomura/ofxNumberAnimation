@@ -51,8 +51,7 @@ void ofxNumberAnimation::draw() {
             default:
                 break;
         }
-    }
-    
+    }    
     ofPopStyle();
 }
 
