@@ -52,7 +52,7 @@ private:
     // for animation
     vector<string> numStrVec;
     string numbers[10] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    vector<float> xPositions;
+    vector<float> xOffsets;
     float startTimeMs;
     float waitTimeMs;
     float waitTimePerDigitMs;
