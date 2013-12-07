@@ -65,7 +65,7 @@ Same as setModeFromRight, but from left to right.
 After a random animation, it shows all numbers at once.
 
 ###void addThousandsSeparator(bool b)###
-You can choose whether you want to draw thousands separator or not.  
+You can choose whether you draw thousands separators or not.  
 e.g. 1234567 -> 1,234,567
 ###void setThousandsSeparatorComma()###
 ###void setThousandsSeparatorPeriod()###
