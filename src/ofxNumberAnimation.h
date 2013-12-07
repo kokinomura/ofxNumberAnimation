@@ -38,6 +38,7 @@ private:
     } status;
     
     int _nDigits;
+    bool _isNDigitsSet;
     int _number;
     ofColor _color;
     float _animationTimeMs;

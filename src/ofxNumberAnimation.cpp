@@ -8,7 +8,7 @@ ofxNumberAnimation::ofxNumberAnimation() {
     _x = 0;
     _y = 0;
     
-    _nDigits = -1;
+    _isNDigitsSet = false;
     _color = ofColor(0);
     
     isFontSpecified = false;
@@ -65,6 +65,7 @@ void ofxNumberAnimation::draw(float x, float y) {
 
 //--------------------------------------------------------------
 void ofxNumberAnimation::setNDigits(int n) {
+    _isNDigitsSet = true;
     _nDigits = n;
 }
 
@@ -73,9 +74,7 @@ void ofxNumberAnimation::startAnimation(int num) {
     // Change number to string
     string numStr = ofToString(num);
 
-    cout << numStr << endl;
-    
-    if (_nDigits == -1) {
+    if (!_isNDigitsSet) {
         _nDigits = numStr.size();
     } else if (_nDigits < numStr.size()) {
         cout << "more digits than nDigits." << endl;
