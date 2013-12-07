@@ -50,9 +50,7 @@ filled automatically.
 ###void setColor(ofColor color)###
 ###void setAnimationTime(float timeMs)###
     
-###void setFont(string fontName)###
-###void setFontSize(int fontSize)###
-###void setFont(string fontName, int fontSize)###
+###void loadFont(string fontName, int fontSize)###
 ###void setLetterSpacing(float spacing)###
 By default, spacing is 1.0.  
 When you set spacing = 2.0, spaces between numbers will be two times wider.
@@ -68,8 +66,6 @@ After a random animation, it shows all numbers at once.
 
 Default Values
 --------------------------------------------
-Font name: Courier New (If you don't have Courier New, please specify a font name.)  
-Font size: 10  
 Letter spacing: 1.0  
   
 Color: ofColor(0)  

@@ -17,9 +17,7 @@ public:
     void setColor(ofColor color);
     void setAnimationTime(float timeMs);
     
-    void setFont(string fontName);
-    void setFontSize(int fontSize);
-    void setFont(string fontName, int fontSize);
+    void loadFont(string fontName, int fontSize);
     void setLetterSpacing(float spacing);
     
     void setModeFromLeft();
@@ -45,6 +43,7 @@ private:
     float _animationTimeMs;
     float _x, _y;
     
+    bool isFontSpecified;
     ofTrueTypeFont font;
     string _fontName;
     int _fontSize;
@@ -61,4 +60,7 @@ private:
     void drawFromLeft(float animatingTimeMs);
     void drawFromRight(float animatingTimeMs);
     void drawAtOnce(float animatingTimeMs);
+    
+    void drawString(string str, float x, float y);
+    float stringWidth(string str);
 };

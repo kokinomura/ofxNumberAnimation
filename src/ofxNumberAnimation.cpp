@@ -5,12 +5,14 @@ ofxNumberAnimation::ofxNumberAnimation() {
     status = before;
     mode = fromRight;
     
+    _x = 0;
+    _y = 0;
+    
     _nDigits = -1;
     _color = ofColor(0);
     
-    _fontName = "Courier New.ttf";
+    isFontSpecified = false;
     _fontSize = 10;
-    font.loadFont(_fontName, _fontSize);
     _spacing = 1.0;
     
     _animationTimeMs = 1000;
@@ -24,7 +26,7 @@ void ofxNumberAnimation::draw() {
         ofPushStyle();
         ofSetColor(_color);
         for (int i=0; i<_nDigits; i++) {
-            font.drawString(numStrVec[i], xPositions[i], _y);
+            drawString(numStrVec[i], xPositions[i], _y);
         }
         ofPopStyle();
         return;
@@ -92,7 +94,7 @@ void ofxNumberAnimation::startAnimation(int num) {
     int x = _x;
     for (int i=0; i<numStrVec.size(); i++) {
         xPositions.push_back(x);
-        x += font.stringWidth(numStrVec[i]) + _fontSize*0.2*_spacing;
+        x += stringWidth(numStrVec[i]) + _fontSize*0.2*_spacing;
     }
     //-----------
 
@@ -113,19 +115,8 @@ void ofxNumberAnimation::setPosition(float x, float y) {
 }
 
 //--------------------------------------------------------------
-void ofxNumberAnimation::setFont(string fontName) {
-    _fontName = fontName;
-    font.loadFont(_fontName, _fontSize);
-}
-
-//--------------------------------------------------------------
-void ofxNumberAnimation::setFontSize(int fontSize) {
-    _fontSize = fontSize;
-    font.loadFont(_fontName, _fontSize);
-}
-
-//--------------------------------------------------------------
-void ofxNumberAnimation::setFont(string fontName, int fontSize) {
+void ofxNumberAnimation::loadFont(string fontName, int fontSize) {
+    isFontSpecified = true;
     _fontName = fontName;
     _fontSize = fontSize;
     font.loadFont(_fontName, _fontSize);
@@ -166,13 +157,13 @@ void ofxNumberAnimation::drawFromLeft(float animatingTimeMs) {
     int n = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
     n = ofClamp(n, 0, _nDigits);
     for (int i=0; i<n; i++) {
-        font.drawString(numStrVec[i], xPositions[i], _y);
+        drawString(numStrVec[i], xPositions[i], _y);
     }
     
     // draw random numbers
     for (int i=n; i<_nDigits; i++) {
         int num = ofRandom(10);
-        font.drawString(numbers[num], xPositions[i], _y);
+        drawString(numbers[num], xPositions[i], _y);
     }
 }
 
@@ -182,13 +173,13 @@ void ofxNumberAnimation::drawFromRight(float animatingTimeMs) {
     int n = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
     n = ofClamp(n, 0, _nDigits);
     for (int i=_nDigits-1; i>=_nDigits-n; i--) {
-        font.drawString(numStrVec[i], xPositions[i], _y);
+        drawString(numStrVec[i], xPositions[i], _y);
     }
     
     // draw random numbers
     for (int i=_nDigits-n-1; i>=0; i--) {
         int num = ofRandom(10);
-        font.drawString(numbers[num], xPositions[i], _y);
+        drawString(numbers[num], xPositions[i], _y);
     }
 }
 
@@ -198,12 +189,31 @@ void ofxNumberAnimation::drawAtOnce(float animatingTimeMs) {
         // draw random numbers
         for (int i=0; i<_nDigits; i++) {
             int num = ofRandom(10);
-            font.drawString(numbers[num], xPositions[i], _y);
+            drawString(numbers[num], xPositions[i], _y);
         }
     } else {
         // draw the correct numbers
         for (int i=0; i<_nDigits; i++) {
-            font.drawString(numStrVec[i], xPositions[i], _y);
+            drawString(numStrVec[i], xPositions[i], _y);
         }
+    }
+}
+
+//--------------------------------------------------------------
+void ofxNumberAnimation::drawString(string str, float x, float y) {
+    if (!isFontSpecified) {
+        ofDrawBitmapString(str, x, y);
+    } else {
+        font.drawString(str, x, y);
+    }
+}
+
+//--------------------------------------------------------------
+float ofxNumberAnimation::stringWidth(string str) {
+    if (!isFontSpecified) {
+        float fontSize = 8.0;
+        return fontSize * 0.75;
+    } else {
+        return font.stringWidth(str);
     }
 }
