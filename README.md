@@ -64,6 +64,15 @@ Same as setModeFromRight, but from left to right.
 ###void setModeAtOnce()###
 After a random animation, it shows all numbers at once.
 
+###void addThousandsSeparator(bool b)###
+You can choose whether you want to draw thousands separator or not.  
+e.g. 1234567 -> 1,234,567
+###void setThousandsSeparatorComma()###
+###void setThousandsSeparatorPeriod()###
+###void setThousandsSeparatorSpace()###
+For various locales, you can choose comma, period or space as thousands separator.
+1,234,567   1.234.567   1 234 567
+
 Default Values
 --------------------------------------------
 Letter spacing: 1.0  
@@ -82,5 +91,4 @@ to use ofxNumberAnimation in any context: commercial or non-commercial, public o
 open or closed source.
 
 Please see License.txt for details.
-
 
