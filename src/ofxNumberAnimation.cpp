@@ -10,12 +10,15 @@ ofxNumberAnimation::ofxNumberAnimation() {
     
     _isNDigitsSet = false;
     _color = ofColor(0);
+    _thousandsSeparator = false;
     
     isFontSpecified = false;
     _fontSize = 10;
     _spacing = 1.0;
     
     _animationTimeMs = 1000;
+    
+    separator = ",";
 }
 
 //--------------------------------------------------------------
@@ -23,12 +26,7 @@ void ofxNumberAnimation::draw() {
     if (status == before) {
         return;
     } else if (status == after) {
-        ofPushStyle();
-        ofSetColor(_color);
-        for (int i=0; i<_nDigits; i++) {
-            drawString(numStrVec[i], xOffsets[i]+_x, _y);
-        }
-        ofPopStyle();
+        drawAll();
         return;
     }
     
@@ -81,16 +79,27 @@ void ofxNumberAnimation::startAnimation(int num) {
         return;
     }
 
+    // insert zeros
     int nZeros = _nDigits - numStr.size();
+    for (int i=0; i<nZeros; i++) {
+        numStr.insert(numStr.begin(), '0');
+    }
+    
+    _numModulo3 = _nDigits % 3;
     numStrVec.clear();
-    for (int i=0; i<_nDigits; i++) {
-        if (i < nZeros) {
-            numStrVec.push_back("0");
-        } else {
-            numStrVec.push_back(ofToString(numStr[i-nZeros]));
+    if (_thousandsSeparator) {
+        for (int i=0; i<_nDigits; i++) {
+            if (i%3 == _numModulo3 && i!= 0) {
+                numStrVec.push_back(separator);
+            }
+            numStrVec.push_back(ofToString(numStr[i]));
+        }
+    } else {
+        for (int i=0; i<_nDigits; i++) {
+            numStrVec.push_back(ofToString(numStr[i]));
         }
     }
-
+    
     //-----------
     // Calculate a position of each number
     int x = 0;
@@ -155,51 +164,123 @@ void ofxNumberAnimation::setModeAtOnce() {
 }
 
 //--------------------------------------------------------------
+void ofxNumberAnimation::addThousandsSeparator(bool b) {
+    _thousandsSeparator = b;
+}
+
+//--------------------------------------------------------------
+void ofxNumberAnimation::setThousandsSeparatorComma() {
+    separator = ",";
+}
+
+//--------------------------------------------------------------
+void ofxNumberAnimation::setThousandsSeparatorPeriod() {
+    separator = ".";
+}
+
+//--------------------------------------------------------------
+void ofxNumberAnimation::setThousandsSeparatorSpace() {
+    separator = " ";
+}
+//--------------------------------------------------------------
+//-private methods----------------------------------------------
+//--------------------------------------------------------------
 void ofxNumberAnimation::drawFromLeft(float animatingTimeMs) {
+    ofPushStyle();
+    ofSetColor(_color);
     // draw the correct numbers
-    int n = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
-    n = ofClamp(n, 0, _nDigits);
-    for (int i=0; i<n; i++) {
-        drawString(numStrVec[i], xOffsets[i]+_x, _y);
+    int nCorrect = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
+    nCorrect = ofClamp(nCorrect, 0, _nDigits);
+    
+    int index = -1;
+    for (int i=0, n=0; n<nCorrect; i++) {
+        string s = numStrVec[i];
+        drawString(s, xOffsets[i]+_x, _y);
+        if (s != separator) {
+            n++;
+        }
+        index = i;
     }
     
     // draw random numbers
-    for (int i=n; i<_nDigits; i++) {
-        int num = ofRandom(10);
-        drawString(numbers[num], xOffsets[i]+_x, _y);
+    for (int i=index+1; i<numStrVec.size(); i++) {
+        string s;
+        if (numStrVec[i] == separator) {
+            s = separator;
+        } else {
+            int num = ofRandom(10);
+            s = numbers[num];
+        }
+        drawString(s, xOffsets[i]+_x, _y);
     }
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------
 void ofxNumberAnimation::drawFromRight(float animatingTimeMs) {
+    ofPushStyle();
+    ofSetColor(_color);
     // draw the correct numbers
-    int n = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
-    n = ofClamp(n, 0, _nDigits);
-    for (int i=_nDigits-1; i>=_nDigits-n; i--) {
-        drawString(numStrVec[i], xOffsets[i]+_x, _y);
+    int nCorrect = (animatingTimeMs - waitTimeMs) / waitTimePerDigitMs;
+    nCorrect = ofClamp(nCorrect, 0, _nDigits);
+    
+    int index = numStrVec.size();
+    for (int i=numStrVec.size()-1, n=_nDigits-1; n>=_nDigits-nCorrect; i--) {
+        string s = numStrVec[i];
+        drawString(s, xOffsets[i]+_x, _y);
+        if (s != separator) {
+            n--;
+        }
+        index = i;
     }
     
     // draw random numbers
-    for (int i=_nDigits-n-1; i>=0; i--) {
-        int num = ofRandom(10);
-        drawString(numbers[num], xOffsets[i]+_x, _y);
+    for (int i=index-1; i>=0; i--) {
+        string s;
+        if (numStrVec[i] == separator) {
+            s = separator;
+        } else {
+            int num = ofRandom(10);
+            s = numbers[num];
+        }
+        drawString(s, xOffsets[i]+_x, _y);
     }
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------
 void ofxNumberAnimation::drawAtOnce(float animatingTimeMs) {
+    ofPushStyle();
+    ofSetColor(_color);
     if (animatingTimeMs < _animationTimeMs) {
         // draw random numbers
-        for (int i=0; i<_nDigits; i++) {
-            int num = ofRandom(10);
-            drawString(numbers[num], xOffsets[i]+_x, _y);
+        for (int i=0; i<numStrVec.size(); i++) {
+            string s;
+            if (numStrVec[i] == separator) {
+                s = separator;
+            } else {
+                int num = ofRandom(10);
+                s = numbers[num];
+            }
+            drawString(s, xOffsets[i]+_x, _y);
         }
     } else {
         // draw the correct numbers
-        for (int i=0; i<_nDigits; i++) {
+        for (int i=0; i<numStrVec.size(); i++) {
             drawString(numStrVec[i], xOffsets[i]+_x, _y);
         }
     }
+    ofPopStyle();
+}
+
+//--------------------------------------------------------------
+void ofxNumberAnimation::drawAll() {
+    ofPushStyle();
+    ofSetColor(_color);
+    for (int i=0; i<numStrVec.size(); i++) {
+        drawString(numStrVec[i], xOffsets[i]+_x, _y);
+    }
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------
@@ -217,6 +298,6 @@ float ofxNumberAnimation::stringWidth(string str) {
         float fontSize = 8.0;
         return fontSize * 0.75;
     } else {
-        return font.stringWidth(str);
+        return str != separator ? font.stringWidth(str) : font.stringWidth(str) * 2.0;
     }
 }

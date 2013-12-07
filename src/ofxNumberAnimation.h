@@ -24,6 +24,11 @@ public:
     void setModeFromRight();
     void setModeAtOnce();
     
+    void addThousandsSeparator(bool b);
+    void setThousandsSeparatorComma();
+    void setThousandsSeparatorPeriod();
+    void setThousandsSeparatorSpace();
+    
 private:
     enum {
         fromLeft,
@@ -37,18 +42,22 @@ private:
         after
     } status;
     
+    float _x, _y;
+    
     int _nDigits;
     bool _isNDigitsSet;
+    int _numModulo3;  // for thousands separator
     int _number;
+    bool _thousandsSeparator;
     ofColor _color;
     float _animationTimeMs;
-    float _x, _y;
     
     bool isFontSpecified;
     ofTrueTypeFont font;
     string _fontName;
     int _fontSize;
     float _spacing;
+    string separator;
     
     // for animation
     vector<string> numStrVec;
@@ -58,9 +67,11 @@ private:
     float waitTimeMs;
     float waitTimePerDigitMs;
     
+    // methods
     void drawFromLeft(float animatingTimeMs);
     void drawFromRight(float animatingTimeMs);
     void drawAtOnce(float animatingTimeMs);
+    void drawAll();
     
     void drawString(string str, float x, float y);
     float stringWidth(string str);

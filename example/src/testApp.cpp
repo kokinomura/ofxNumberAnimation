@@ -14,9 +14,12 @@ void testApp::setup(){
     ani3.loadFont("Courier New.ttf", 32);
     ani4.loadFont("Courier New.ttf", 32);
     
-    ani2.setNDigits(5);
+    ani2.setNDigits(8);
+    ani2.addThousandsSeparator(true);
     
     ani3.setLetterSpacing(2.0);
+    ani3.addThousandsSeparator(true);
+    ani3.setThousandsSeparatorPeriod();
     
     ani4.setPosition(500, 420);
     ani4.setAnimationTime(2000);
@@ -39,7 +42,7 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
     ani1.startAnimation(1452);
-    ani2.startAnimation(231);
+    ani2.startAnimation(23141);
     ani3.startAnimation(750246);
     ani4.startAnimation(8033175);
 }
