@@ -71,7 +71,7 @@ e.g. 1234567 -> 1,234,567
 ###void setThousandsSeparatorComma()###
 ###void setThousandsSeparatorPeriod()###
 ###void setThousandsSeparatorSpace()###
-For various locales, you can choose comma, period or space as thousands separator.
+For various locales, you can choose comma, period or space as thousands separator.  
 1,234,567   1.234.567   1 234 567
 
 Default Values
