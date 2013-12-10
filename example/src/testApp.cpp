@@ -24,6 +24,7 @@ void testApp::setup(){
     ani4.setPosition(500, 420);
     ani4.setAnimationTime(2000);
     ani4.setColor(ofColor(255, 0, 0));
+
 }
 
 //--------------------------------------------------------------
@@ -33,6 +34,8 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    ofSetColor(0);
+    ofDrawBitmapString("Click to start an animation", 500, 250);
     ani1.draw(500, 300);
     ani2.draw(500, 340);
     ani3.draw(500, 380);
@@ -41,10 +44,7 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-    ani1.startAnimation(1452);
-    ani2.startAnimation(23141);
-    ani3.startAnimation(750246);
-    ani4.startAnimation(8033175);
+
 }
 
 //--------------------------------------------------------------
@@ -64,7 +64,10 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-
+    ani1.startAnimation(1452);
+    ani2.startAnimation(23141);
+    ani3.startAnimation(750246);
+    ani4.startAnimation(8033175);
 }
 
 //--------------------------------------------------------------
