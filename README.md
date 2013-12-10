@@ -4,8 +4,9 @@ ofxNumberAnimation is an addon to add an animation of numbers. First it shows ra
 numbers at high speed, then reveals each digit from right to left (or left to right) with  
 certain delay time. This is useful to show numbers such as score or price dramatically.  
 
-Current version is based on version 0.8.0.
+Current version is based on version 0.8.0.  
 
+-->> Take a look at an example video. http://vimeo.com/81464789    
 
 Usage
 --------------------------------------------
